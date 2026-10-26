@@ -8,7 +8,7 @@
 
 public class Coach extends Personne {
 
-    // Atribut
+    // Attribut
     private int totalVictoires;
 
     // Constructeur
