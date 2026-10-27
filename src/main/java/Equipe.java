@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Equipe {
+public class Equipe implements Classable {
 
     private String nom;
     private Coach coach;
@@ -13,6 +13,7 @@ public class Equipe {
         this.coach = coach;
         this.joueurs = new ArrayList<>();
         this.points = 0;
+        coach.prendreEquipe(this);
     }
 
     public String getNom() {
@@ -32,14 +33,26 @@ public class Equipe {
     }
 
     public void ajouterJoueur(Joueur joueur) {
+        if (joueurs.contains(joueur)) {
+            return;
+        }
+        joueur.rejoindreEquipe(this);
         joueurs.add(joueur);
     }
 
     public void retirerJoueur(Joueur joueur) {
+        if (!joueurs.contains(joueur)) {
+            return;
+        }
         joueurs.remove(joueur);
+        joueur.quitterEquipe();
     }
 
     public void enregistrerVictoire() {
         points += 3;
+        coach.enregistrerVictoire();
+        for (Joueur joueur : joueurs) {
+            joueur.enregistrerVictoireAvecEquipe();
+        }
     }
 }
