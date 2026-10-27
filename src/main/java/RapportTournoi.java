@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 public class RapportTournoi {
 
+    // Attributs
     private String nomTournoi;
     private LocalDate date;
     private String nomJeu;
@@ -18,6 +19,7 @@ public class RapportTournoi {
     private String nomVainqueur;
     private boolean reussi;
 
+    // Constructeur
     public RapportTournoi(String nomTournoi, LocalDate date, String nomJeu, int matchsPrevus, int matchsJoues,
             String nomVainqueur, boolean reussi) {
         this.nomTournoi = nomTournoi;
@@ -29,6 +31,7 @@ public class RapportTournoi {
         this.reussi = reussi;
     }
 
+    // Getters
     public String getNomTournoi() {
         return nomTournoi;
     }
