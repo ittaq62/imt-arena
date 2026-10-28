@@ -34,12 +34,18 @@ public class GestionnaireTournois {
     private int chanceIncident;
     private long graineAleatoire;
     private List<Tournoi> tournoisTermines;
+    private ChoixVainqueur choixVainqueur;
 
     // Constructeur
     public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire) {
+        this(tempsParMatch, chanceIncident, graineAleatoire, new TirageEquitable());
+    }
+
+    public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire, ChoixVainqueur choixVainqueur) {
         this.tempsParMatch = tempsParMatch;
         this.chanceIncident = chanceIncident;
         this.graineAleatoire = graineAleatoire;
+        this.choixVainqueur = choixVainqueur;
         this.tournoisPlanifies = new PriorityQueue<>(Comparator.comparing(Tournoi::getDate));
         this.tournoisEnCours = new ArrayList<>();
         this.pool = Executors.newFixedThreadPool(3);
@@ -142,14 +148,7 @@ public class GestionnaireTournois {
                 tournoi.annulerMatch(match);
             } else {
                 match.getArbitre().enregistrerMatchArbitre();
-                Equipe vainqueur;
-
-                if (random.nextBoolean()) {
-                    vainqueur = match.getEquipe1();
-                } else {
-                    vainqueur = match.getEquipe2();
-                }
-
+                Equipe vainqueur = choixVainqueur.choisir(match, random);
                 tournoi.jouerMatch(match, vainqueur);
                 victoires.put(vainqueur, victoires.get(vainqueur) + 1);
                 matchsJoues++;
