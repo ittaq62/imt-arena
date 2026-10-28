@@ -5,7 +5,6 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
-
 package jeu;
 
 import java.util.ArrayList;
@@ -16,8 +15,10 @@ import java.util.Random;
 import equipe.Equipe;
 import personne.Joueur;
 
+// Class JeuEquipe est une sous-classe de Jeu qui représente un jeu d'équipe avec un nombre spécifique de joueurs par équipe. Elle implémente les méthodes abstraites de la classe Jeu pour gérer l'alignement des joueurs et le nombre de joueurs requis.
 public class JeuEquipe extends Jeu {
 
+    // Attributs
     private final int nbJoueursParEquipe;
 
     // Constructeur

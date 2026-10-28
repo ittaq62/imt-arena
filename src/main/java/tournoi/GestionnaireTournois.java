@@ -5,7 +5,6 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
-
 package tournoi;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.concurrent.Executors;
 import equipe.Equipe;
 import personne.Joueur;
 
+// Class GestionnaireTournois est responsable de la gestion des tournois. Elle permet de planifier, démarrer et simuler les tournois, tout en gérant les équipes et les matchs. Elle utilise un pool de threads pour exécuter les tournois en parallèle.
 public class GestionnaireTournois {
 
     // Attributs

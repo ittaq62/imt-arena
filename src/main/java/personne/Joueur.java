@@ -9,6 +9,7 @@ package personne;
 
 import equipe.Equipe;
 
+// Class Joueur est une sous-classe de Personne qui représente un joueur. Elle possède des attributs pour le statut du joueur, le nombre de victoires avec l'équipe et l'équipe à laquelle il appartient, ainsi que des méthodes pour enregistrer une victoire, rejoindre ou quitter une équipe.
 public class Joueur extends Personne {
 
     // Attributs

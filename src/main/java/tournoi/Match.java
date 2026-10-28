@@ -11,6 +11,7 @@ import equipe.Equipe;
 import jeu.Jeu;
 import personne.Arbitre;
 
+// Class Match représente un match entre deux équipes pour un jeu spécifique, arbitré par un arbitre. Elle gère l'état du match, le vainqueur et fournit des méthodes pour désigner le vainqueur ou annuler le match.
 public class Match {
 
     private Equipe equipe1;

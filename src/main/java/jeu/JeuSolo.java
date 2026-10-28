@@ -13,6 +13,7 @@ import java.util.Random;
 import equipe.Equipe;
 import personne.Joueur;
 
+// CLass JeuSolo est une sous-classe de Jeu qui représente un jeu solo. Elle implémente les méthodes abstraites de la classe Jeu pour gérer l'alignement des joueurs et le nombre de joueurs requis.
 public class JeuSolo extends Jeu {
 
     // Constructeur
