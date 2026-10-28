@@ -3,6 +3,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import equipe.Equipe;
+import jeu.Jeu;
+import jeu.JeuSolo;
+import personne.Arbitre;
+import personne.Coach;
+import tournoi.Match;
+
+
 class MatchTest {
 
     private Equipe equipe1;
