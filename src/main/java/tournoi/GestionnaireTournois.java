@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import equipe.Equipe;
 import personne.Joueur;
@@ -105,13 +106,14 @@ public class GestionnaireTournois {
         long graine = graineAleatoire;
         graineAleatoire++;
 
-        pool.execute(new Runnable() {
+        Future<?> future = pool.submit(new Runnable() {
             @Override
             public void run() {
                 simuler(tournoi, graine);
                 retirerTournoiTermine(tournoi);
             }
         });
+        tournoi.definirFuture(future);
 
         return tournoi;
     }
