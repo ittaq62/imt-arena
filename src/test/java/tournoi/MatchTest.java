@@ -1,3 +1,5 @@
+package tournoi;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +10,6 @@ import jeu.Jeu;
 import jeu.JeuSolo;
 import personne.Arbitre;
 import personne.Coach;
-import tournoi.Match;
-
 
 class MatchTest {
 
