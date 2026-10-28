@@ -1,33 +1,58 @@
+/*
+##################################################################
+# @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
+# @DateCréation : 27/10/2026                                     #
+# @DateDernièreModification : 28/10/2026                         #
+##################################################################
+*/
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import personne.Joueur;
+import jeu.Jeu;
+import jeu.JeuSolo;
+import personne.Arbitre;
 
-class JoueurTest {
+// Création de test pour la class arbitre, pour vérifier les qualifications pour un jeu et le compteur de matchs arbitrés.
+class ArbitreTest {
 
-    @Test
-    void joueurCommenceAmateur() {
-        Joueur joueur = new Joueur(
-                1, "Dupont", "Alice", "Alicia", "F", "0600000000");
+    private Arbitre arbitre;
+    private Jeu jeu;
 
-        assertEquals(Joueur.Statut.AMATEUR, joueur.getStatut());
-        assertEquals(0, joueur.getVictoiresAvecEquipe());
+    @BeforeEach
+    void creerArbitre() {
+        arbitre = new Arbitre(1, "Durand", "Emma", "Emmy", "F", "0633333333");
+        jeu = new JeuSolo("Street Fighter", 3);
     }
 
     @Test
-    void joueurPasseProApresTroisVictoires() {
-        Joueur joueur = new Joueur(
-                1, "Dupont", "Alice", "Alicia", "F", "0600000000");
+    void arbitreCommenceSansQualificationNiMatch() {
+        assertFalse(arbitre.estQualifiePour(jeu));
+        assertEquals(0, arbitre.getMatchsArbitres());
+    }
 
-        joueur.enregistrerVictoireAvecEquipe();
-        joueur.enregistrerVictoireAvecEquipe();
+    @Test
+    void arbitreEstQualifieApresAjout() {
+        arbitre.ajouterQualification(jeu);
 
-        assertEquals(Joueur.Statut.AMATEUR, joueur.getStatut());
+        assertTrue(arbitre.estQualifiePour(jeu));
+    }
 
-        joueur.enregistrerVictoireAvecEquipe();
+    @Test
+    void qualificationAjouteeUneSeuleFois() {
+        arbitre.ajouterQualification(jeu);
+        arbitre.ajouterQualification(jeu);
 
-        assertEquals(3, joueur.getVictoiresAvecEquipe());
-        assertEquals(Joueur.Statut.PRO, joueur.getStatut());
+        assertEquals(1, arbitre.getJeuxQualifies().size());
+    }
+
+    @Test
+    void arbitreCompteSesMatchs() {
+        arbitre.enregistrerMatchArbitre();
+        arbitre.enregistrerMatchArbitre();
+
+        assertEquals(2, arbitre.getMatchsArbitres());
     }
 }
