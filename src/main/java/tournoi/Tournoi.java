@@ -20,6 +20,7 @@ import equipe.Equipe;
 import jeu.Jeu;
 import personne.Arbitre;
 
+// Class Tournoi représente un tournoi de jeu vidéo, incluant des équipes, des arbitres et des matchs. Elle gère l'état du tournoi, la planification, le démarrage et la simulation des matchs, ainsi que la génération d'un rapport final.
 public class Tournoi {
 
     public enum Etat {

@@ -13,6 +13,7 @@ import java.util.Random;
 import equipe.Equipe;
 import personne.Joueur;
 
+// Class Jeu est une classe abstraite qui représente un jeu avec un nom et un nombre de manches. Elle définit des méthodes abstraites pour obtenir le nombre de joueurs requis et pour aligner les joueurs d'une équipe.
 public abstract class Jeu {
 
     // Attributs

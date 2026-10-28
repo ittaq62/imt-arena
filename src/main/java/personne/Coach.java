@@ -9,6 +9,7 @@ package personne;
 
 import equipe.Equipe;
 
+// Class Coach est une sous-classe de Personne qui représente un coach. Elle possède des attributs pour le nombre total de victoires et l'équipe qu'il dirige, ainsi que des méthodes pour enregistrer une victoire et prendre en charge une équipe.
 public class Coach extends Personne {
 
     // Attribut

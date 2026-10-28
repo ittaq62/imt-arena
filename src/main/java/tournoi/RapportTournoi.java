@@ -5,11 +5,11 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
-
 package tournoi;
 
 import java.time.LocalDate;
 
+// Class RapportTournoi représente un rapport détaillé d'un tournoi, incluant le nom du tournoi, la date, le jeu joué, le nombre de matchs prévus et joués, le nom du vainqueur et si le tournoi a été réussi. Elle fournit des getters pour accéder à ces informations.
 public class RapportTournoi {
 
     // Attributs
