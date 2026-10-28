@@ -35,17 +35,19 @@ public class GestionnaireTournois {
     private long graineAleatoire;
     private List<Tournoi> tournoisTermines;
     private ChoixVainqueur choixVainqueur;
+    private RapportRepository rapportRepository;
 
     // Constructeur
     public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire) {
-        this(tempsParMatch, chanceIncident, graineAleatoire, new TirageEquitable());
+        this(tempsParMatch, chanceIncident, graineAleatoire, new TirageEquitable(), new RapportRepository());
     }
 
-    public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire, ChoixVainqueur choixVainqueur) {
+    public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire, ChoixVainqueur choixVainqueur, RapportRepository rapportRepository) {
         this.tempsParMatch = tempsParMatch;
         this.chanceIncident = chanceIncident;
         this.graineAleatoire = graineAleatoire;
         this.choixVainqueur = choixVainqueur;
+        this.rapportRepository = rapportRepository;
         this.tournoisPlanifies = new PriorityQueue<>(Comparator.comparing(Tournoi::getDate));
         this.tournoisEnCours = new ArrayList<>();
         this.pool = Executors.newFixedThreadPool(3);
@@ -181,6 +183,7 @@ public class GestionnaireTournois {
         RapportTournoi rapport = new RapportTournoi(tournoi.getNom(), tournoi.getDate(), tournoi.getJeu().getNom(),
                 tournoi.getMatchs().size(), matchsJoues, nomVainqueur, reussi);
 
+        rapportRepository.sauvegarder(rapport);
         tournoi.terminer(rapport);
     }
 
@@ -219,5 +222,6 @@ public class GestionnaireTournois {
             pool.shutdownNow();
             Thread.currentThread().interrupt();
         }
+        rapportRepository.fermer();
     }
 }

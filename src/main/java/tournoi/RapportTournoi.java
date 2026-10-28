@@ -7,12 +7,18 @@
 */
 package tournoi;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 // Class RapportTournoi représente un rapport détaillé d'un tournoi, incluant le nom du tournoi, la date, le jeu joué, le nombre de matchs prévus et joués, le nom du vainqueur et si le tournoi a été réussi. Elle fournit des getters pour accéder à ces informations.
+@Entity
 public class RapportTournoi {
 
     // Attributs
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     private String nomTournoi;
     private LocalDate date;
     private String nomJeu;
@@ -31,6 +37,10 @@ public class RapportTournoi {
         this.matchsJoues = matchsJoues;
         this.nomVainqueur = nomVainqueur;
         this.reussi = reussi;
+    }
+
+    //Constructeur vide obligatoire pour jpa
+    protected RapportTournoi() {
     }
 
     // Getters
@@ -56,6 +66,10 @@ public class RapportTournoi {
 
     public String getNomVainqueur() {
         return nomVainqueur;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public boolean isReussi() {
