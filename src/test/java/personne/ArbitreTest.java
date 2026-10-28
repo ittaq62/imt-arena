@@ -5,6 +5,7 @@
 # @DateDernièreModification : 28/10/2026                         #
 ##################################################################
 */
+package personne;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import jeu.Jeu;
 import jeu.JeuSolo;
-import personne.Arbitre;
 
 // Création de test pour la class arbitre, pour vérifier les qualifications pour un jeu et le compteur de matchs arbitrés.
 class ArbitreTest {
