@@ -2,14 +2,14 @@
 ##################################################################
 # @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
 # @DateCréation : 26/10/2026                                     #
-# @DateDernièreModification : 26/10/2026                         #
+# @DateDernièreModification : 28/10/2026                         #
 ##################################################################
 */
+package personne;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import personne.Joueur;
 
 // Création de test pour la class joueur, pour vérifier que les méthodes fonctionnent correctement comme la méthode enregistrerVictoireAvecEquipe() et que le joueur commence avec le statut AMATEUR.
 class JoueurTest {
