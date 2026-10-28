@@ -14,7 +14,7 @@ import personne.Coach;
 import personne.Joueur;
 
 // Class Equipe représente une équipe de joueurs avec un coach. Elle permet d'ajouter et de retirer des joueurs, d'enregistrer des victoires et de suivre les points de l'équipe.
-public class Equipe implements Classable {
+public class Equipe implements Classable, Comparable<Equipe> {
 
     // Attributs
     private String nom;
@@ -78,5 +78,13 @@ public class Equipe implements Classable {
     @Override
     public String toString() {
         return nom + " (" + points + " pts)";
+    }
+
+    @Override
+    public int compareTo(Equipe autre) {
+        if (points != autre.points) {
+            return Integer.compare(autre.points, points);
+        }
+        return nom.compareTo(autre.nom);
     }
 }
