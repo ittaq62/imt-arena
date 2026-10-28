@@ -13,13 +13,16 @@ import java.util.List;
 import personne.Coach;
 import personne.Joueur;
 
+// Class Equipe représente une équipe de joueurs avec un coach. Elle permet d'ajouter et de retirer des joueurs, d'enregistrer des victoires et de suivre les points de l'équipe.
 public class Equipe implements Classable {
 
+    // Attributs
     private String nom;
     private Coach coach;
     private List<Joueur> joueurs;
     private int points;
 
+    // Constructeur
     public Equipe(String nom, Coach coach) {
         this.nom = nom;
         this.coach = coach;
@@ -28,6 +31,7 @@ public class Equipe implements Classable {
         coach.prendreEquipe(this);
     }
 
+    // Getters
     public String getNom() {
         return nom;
     }
@@ -44,6 +48,7 @@ public class Equipe implements Classable {
         return points;
     }
 
+    // Méthodes pour ajouter un joueur à l'équipe
     public void ajouterJoueur(Joueur joueur) {
         if (joueurs.contains(joueur)) {
             return;
@@ -52,6 +57,7 @@ public class Equipe implements Classable {
         joueurs.add(joueur);
     }
 
+    // Méthode pour retirer un joueur de l'équipe
     public void retirerJoueur(Joueur joueur) {
         if (!joueurs.contains(joueur)) {
             return;
@@ -60,6 +66,7 @@ public class Equipe implements Classable {
         joueur.quitterEquipe();
     }
 
+    // Méthode pour enregistrer une victoire de l'équipe
     public void enregistrerVictoire() {
         points += 3;
         coach.enregistrerVictoire();
