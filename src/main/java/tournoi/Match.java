@@ -83,4 +83,10 @@ public class Match {
         JOUE,
         ANNULE
     }
+
+    @Override
+    public String toString() {
+        String resultat = (vainqueur != null) ? "vainqueur : " + vainqueur.getNom() : etat.toString();
+        return equipe1.getNom() + " vs " + equipe2.getNom() + " [" + jeu.getNom() + "] - " + resultat;
+    }
 }

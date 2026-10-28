@@ -216,6 +216,6 @@ public class Tournoi {
     public String toString() {
         return "Tournoi [nom=" + nom + ", jeu=" + jeu + ", date=" + date + ", budget=" + budget + ", nombreArenes="
                 + nombreArenes + ", equipes=" + equipes + ", arbitres=" + arbitres + ", matchs=" + matchs + ", etat="
-                + etat + ", rapport=" + rapport + ", futureSimulation=" + futureSimulation + "]";
+                + etat + ", rapport=" + rapport + "]";
     }
 }

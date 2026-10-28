@@ -15,6 +15,9 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import equipe.Equipe;
 import personne.Joueur;
@@ -23,22 +26,24 @@ import personne.Joueur;
 public class GestionnaireTournois {
 
     // Attributs
-    private List<Tournoi> tournoisPlanifies;
+    private PriorityQueue<Tournoi> tournoisPlanifies;
     private List<Tournoi> tournoisEnCours;
     private ExecutorService pool;
 
     private int tempsParMatch;
     private int chanceIncident;
     private long graineAleatoire;
+    private List<Tournoi> tournoisTermines;
 
     // Constructeur
     public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire) {
         this.tempsParMatch = tempsParMatch;
         this.chanceIncident = chanceIncident;
         this.graineAleatoire = graineAleatoire;
-        this.tournoisPlanifies = new ArrayList<>();
+        this.tournoisPlanifies = new PriorityQueue<>(Comparator.comparing(Tournoi::getDate));
         this.tournoisEnCours = new ArrayList<>();
         this.pool = Executors.newFixedThreadPool(3);
+        this.tournoisTermines = new ArrayList<>();
     }
 
     // Planification
@@ -64,16 +69,7 @@ public class GestionnaireTournois {
             throw new IllegalStateException("Aucun tournoi n'est planifié.");
         }
 
-        int indexProchain = 0;
-
-        for (int i = 1; i < tournoisPlanifies.size(); i++) {
-            if (tournoisPlanifies.get(i).getDate().isBefore(
-                    tournoisPlanifies.get(indexProchain).getDate())) {
-                indexProchain = i;
-            }
-        }
-
-        Tournoi tournoi = tournoisPlanifies.get(indexProchain);
+        Tournoi tournoi = tournoisPlanifies.peek();
 
         for (Tournoi autreTournoi : tournoisEnCours) {
             for (Equipe equipe : tournoi.getEquipes()) {
@@ -100,7 +96,7 @@ public class GestionnaireTournois {
 
         tournoi.preparerDemarrage();
 
-        tournoisPlanifies.remove(indexProchain);
+        tournoisPlanifies.poll();
         tournoisEnCours.add(tournoi);
 
         long graine = graineAleatoire;
@@ -109,8 +105,11 @@ public class GestionnaireTournois {
         Future<?> future = pool.submit(new Runnable() {
             @Override
             public void run() {
-                simuler(tournoi, graine);
-                retirerTournoiTermine(tournoi);
+                try {
+                    simuler(tournoi, graine);
+                } finally {
+                    retirerTournoiTermine(tournoi);
+                }
             }
         });
         tournoi.definirFuture(future);
@@ -125,6 +124,8 @@ public class GestionnaireTournois {
         try {
             Thread.sleep(duree);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return;
         }
 
         Random random = new Random(graine);
@@ -137,11 +138,10 @@ public class GestionnaireTournois {
         int matchsJoues = 0;
 
         for (Match match : tournoi.getMatchs()) {
-            match.getArbitre().enregistrerMatchArbitre();
-
             if (random.nextInt(100) < chanceIncident) {
                 tournoi.annulerMatch(match);
             } else {
+                match.getArbitre().enregistrerMatchArbitre();
                 Equipe vainqueur;
 
                 if (random.nextBoolean()) {
@@ -188,19 +188,37 @@ public class GestionnaireTournois {
     // Retrait des tournois terminés
     private synchronized void retirerTournoiTermine(Tournoi tournoi) {
         tournoisEnCours.remove(tournoi);
+        tournoisTermines.add(tournoi);
     }
 
     // Getters
     public synchronized List<Tournoi> getTournoisPlanifies() {
-        return new ArrayList<>(tournoisPlanifies);
+        List<Tournoi> liste = new ArrayList<>(tournoisPlanifies);
+        liste.sort(Comparator.comparing(Tournoi::getDate));
+        return liste;
     }
 
     public synchronized List<Tournoi> getTournoisEnCours() {
         return new ArrayList<>(tournoisEnCours);
     }
 
+
+    public synchronized List<Tournoi> getTournoisTermines() {
+        List<Tournoi> liste = new ArrayList<>(tournoisTermines);
+        liste.sort(Comparator.comparingDouble(Tournoi::getBudget).reversed());
+        return liste;
+    }
+
     // Arrêt du pool de threads
     public void fermer() {
         pool.shutdown();
+        try {
+            if (!pool.awaitTermination(10, TimeUnit.SECONDS)) {
+                pool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }

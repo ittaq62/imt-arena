@@ -74,4 +74,9 @@ public class Equipe implements Classable {
             joueur.enregistrerVictoireAvecEquipe();
         }
     }
+
+    @Override
+    public String toString() {
+        return nom + " (" + points + " pts)";
+    }
 }
