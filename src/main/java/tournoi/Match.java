@@ -1,3 +1,16 @@
+/*
+##################################################################
+# @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
+# @DateCréation : 26/10/2026                                     #
+# @DateDernièreModification : 27/10/2026                         #
+##################################################################
+*/
+package tournoi;
+
+import equipe.Equipe;
+import jeu.Jeu;
+import personne.Arbitre;
+
 public class Match {
 
     private Equipe equipe1;

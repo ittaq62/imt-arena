@@ -6,6 +6,10 @@
 ##################################################################
 */
 
-public interface Classable {
-    int getPoints();
+package personne;
+
+import jeu.Jeu;
+
+public interface Qualifiable {
+    boolean estQualifiePour(Jeu jeu);
 }
