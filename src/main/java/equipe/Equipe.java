@@ -2,7 +2,7 @@
 ##################################################################
 # @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
 # @DateCréation : 26/10/2026                                     #
-# @DateDernièreModification : 27/10/2026                         #
+# @DateDernièreModification : 28/10/2026                         #
 ##################################################################
 */
 package equipe;
@@ -14,7 +14,7 @@ import personne.Coach;
 import personne.Joueur;
 
 // Class Equipe représente une équipe de joueurs avec un coach. Elle permet d'ajouter et de retirer des joueurs, d'enregistrer des victoires et de suivre les points de l'équipe.
-public class Equipe implements Classable {
+public class Equipe implements Classable, Comparable<Equipe> {
 
     // Attributs
     private String nom;
@@ -73,5 +73,20 @@ public class Equipe implements Classable {
         for (Joueur joueur : joueurs) {
             joueur.enregistrerVictoireAvecEquipe();
         }
+    }
+
+    // Ordre du classement, points décroissants puis nom
+    @Override
+    public int compareTo(Equipe autre) {
+        if (points != autre.points) {
+            return autre.points - points;
+        }
+        return nom.compareTo(autre.nom);
+    }
+
+    // Méthode toString
+    @Override
+    public String toString() {
+        return nom + " (" + points + " pts)";
     }
 }

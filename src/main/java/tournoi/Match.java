@@ -2,7 +2,7 @@
 ##################################################################
 # @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
 # @DateCréation : 26/10/2026                                     #
-# @DateDernièreModification : 27/10/2026                         #
+# @DateDernièreModification : 28/10/2026                         #
 ##################################################################
 */
 package tournoi;
@@ -76,6 +76,16 @@ public class Match {
             throw new IllegalStateException("Le match est déjà terminé.");
         }
         this.etat = Etat.ANNULE;
+    }
+
+    // Méthode toString
+    @Override
+    public String toString() {
+        String texte = equipe1.getNom() + " contre " + equipe2.getNom() + " (" + etat + ")";
+        if (vainqueur != null) {
+            texte = texte + ", vainqueur " + vainqueur.getNom();
+        }
+        return texte;
     }
 
     public enum Etat {
