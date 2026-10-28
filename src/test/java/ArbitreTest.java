@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import personne.Joueur;
+
 class JoueurTest {
 
     @Test

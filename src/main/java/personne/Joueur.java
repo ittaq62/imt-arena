@@ -5,6 +5,9 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
+package personne;
+
+import equipe.Equipe;
 
 public class Joueur extends Personne {
 

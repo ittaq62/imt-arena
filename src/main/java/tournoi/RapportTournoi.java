@@ -6,6 +6,8 @@
 ##################################################################
 */
 
+package tournoi;
+
 import java.time.LocalDate;
 
 public class RapportTournoi {

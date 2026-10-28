@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import personne.Coach;
+
 // Création de test pour la class coach, pour vérifier que les méthodes fonctionnent correctement, principalement le compteur de victoires et et que le coach commence avec 0 victoire.
 class CoachTest {
 

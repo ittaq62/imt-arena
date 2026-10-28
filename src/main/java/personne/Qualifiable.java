@@ -6,6 +6,10 @@
 ##################################################################
 */
 
+package personne;
+
+import jeu.Jeu;
+
 public interface Qualifiable {
     boolean estQualifiePour(Jeu jeu);
 }

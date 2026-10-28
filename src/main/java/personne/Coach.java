@@ -5,6 +5,9 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
+package personne;
+
+import equipe.Equipe;
 
 public class Coach extends Personne {
 
@@ -24,6 +27,7 @@ public class Coach extends Personne {
         return totalVictoires;
     }
 
+    // Méthode pour enregistrer une victoire
     public void enregistrerVictoire() {
         totalVictoires++;
     }

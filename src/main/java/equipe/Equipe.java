@@ -1,5 +1,17 @@
+/*
+##################################################################
+# @Auteur : DOUILLY Quentin, CHÂTELAIN Lilou & BEIGNON Arthur    #
+# @DateCréation : 26/10/2026                                     #
+# @DateDernièreModification : 27/10/2026                         #
+##################################################################
+*/
+package equipe;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import personne.Coach;
+import personne.Joueur;
 
 public class Equipe implements Classable {
 

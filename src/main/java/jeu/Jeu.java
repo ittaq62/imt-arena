@@ -5,9 +5,13 @@
 # @DateDernièreModification : 27/10/2026                         #
 ##################################################################
 */
+package jeu;
 
 import java.util.List;
 import java.util.Random;
+
+import equipe.Equipe;
+import personne.Joueur;
 
 public abstract class Jeu {
 
@@ -16,11 +20,11 @@ public abstract class Jeu {
     private final int nombreManches;
 
     // Constructeur
-    protected Jeu(String nom, int nombreManches){
-        if(nom == null || nom.isBlank()){
+    protected Jeu(String nom, int nombreManches) {
+        if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Le nom du jeu est obligatoire.");
         }
-        if(nombreManches <= 0){
+        if (nombreManches <= 0) {
             throw new IllegalArgumentException("Le nombre de manches doit être supérieur à 0.");
         }
         this.nom = nom;
@@ -38,6 +42,7 @@ public abstract class Jeu {
 
     // Méthodes abstraites
     public abstract int getNombreJoueursRequis();
+
     public abstract List<Joueur> aligner(Equipe equipe, Random random);
 
     // Méthode hashCode
@@ -75,5 +80,5 @@ public abstract class Jeu {
     public String toString() {
         return "Jeu [nom=" + nom + ", nombreManches=" + nombreManches + "]";
     }
-    
+
 }
