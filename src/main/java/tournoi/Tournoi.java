@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import equipe.Equipe;
@@ -231,6 +232,32 @@ public class Tournoi {
     // Classement des équipes du tournoi, par points décroissants puis par nom
     public TreeSet<Equipe> getClassement() {
         return new TreeSet<>(equipes);
+    }
+
+    // Matchs d'une équipe dans ce tournoi
+    public List<Match> getMatchsEquipe(Equipe equipe) {
+        List<Match> resultat = new ArrayList<>();
+        for (Match match : matchs) {
+            if (match.getEquipe1() == equipe || match.getEquipe2() == equipe) {
+                resultat.add(match);
+            }
+        }
+        return resultat;
+    }
+
+    // Matchs joués du tournoi, regroupés par équipe gagnante (dans l'ordre du classement)
+    public Map<Equipe, List<Match>> getMatchsParVainqueur() {
+        Map<Equipe, List<Match>> resultat = new TreeMap<>();
+        for (Match match : matchs) {
+            Equipe vainqueur = match.getVainqueur();
+            if (vainqueur != null) {
+                if (!resultat.containsKey(vainqueur)) {
+                    resultat.put(vainqueur, new ArrayList<>());
+                }
+                resultat.get(vainqueur).add(match);
+            }
+        }
+        return resultat;
     }
 
     @Override

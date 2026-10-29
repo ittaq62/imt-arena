@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -175,5 +176,50 @@ class TournoiTest {
         tigres.enregistrerVictoire();
 
         assertIterableEquals(List.of(tigres, aigles, lions), tournoi.getClassement());
+    }
+
+    @Test
+    void matchsDUneEquipe() {
+        Tournoi tournoi = creerTournoiPret();
+        Equipe loups = tournoi.trouverEquipeParNom("Les Loups");
+
+        List<Match> matchsLoups = tournoi.getMatchsEquipe(loups);
+
+        assertEquals(3, matchsLoups.size());
+        for (Match match : matchsLoups) {
+            assertTrue(match.getEquipe1() == loups || match.getEquipe2() == loups);
+        }
+    }
+
+    @Test
+    void matchsRegroupesParEquipeGagnante() {
+        Tournoi tournoi = creerTournoiPret();
+        List<Match> matchs = tournoi.getMatchs();
+        Equipe lions = tournoi.trouverEquipeParNom("Les Lions");
+        Equipe tigres = tournoi.trouverEquipeParNom("Les Tigres");
+
+        tournoi.jouerMatch(matchs.get(0), lions);
+        tournoi.jouerMatch(matchs.get(1), lions);
+        tournoi.annulerMatch(matchs.get(2));
+        tournoi.jouerMatch(matchs.get(3), tigres);
+
+        Map<Equipe, List<Match>> parVainqueur = tournoi.getMatchsParVainqueur();
+
+        assertIterableEquals(List.of(lions, tigres), parVainqueur.keySet());
+        assertEquals(List.of(matchs.get(0), matchs.get(1)), parVainqueur.get(lions));
+        assertEquals(List.of(matchs.get(3)), parVainqueur.get(tigres));
+    }
+
+    private Tournoi creerTournoiPret() {
+        Tournoi tournoi = creerTournoi();
+        tournoi.inscrireEquipe(creerEquipe("Les Lions", 1));
+        tournoi.inscrireEquipe(creerEquipe("Les Tigres", 2));
+        tournoi.inscrireEquipe(creerEquipe("Les Aigles", 3));
+        tournoi.inscrireEquipe(creerEquipe("Les Loups", 4));
+        Arbitre arbitre = new Arbitre(10, "Durand", "Emma", "Emmy", "F", "0633333333");
+        arbitre.ajouterQualification(jeu);
+        tournoi.ajouterArbitre(arbitre);
+        tournoi.preparerDemarrage();
+        return tournoi;
     }
 }
