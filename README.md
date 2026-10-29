@@ -13,6 +13,7 @@ A la racine du projet, dans le dossier où se trouve ```pom.xml```, lancer :
 mvn compile
 mvn exec:java "-Dexec.mainClass=tournoi.Main"
 ```
+(avoir installé maven avant)
 
 ## 2. Comment lancer les tests
 Exécuter dans un terminal à la racine du projet la commande suivante :
