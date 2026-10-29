@@ -150,4 +150,14 @@ class TournoiTest {
         equipe.ajouterJoueur(new Joueur(100 + idCoach, "Joueur", "Prenom", "Joueur" + idCoach, "M", "0600000000"));
         return equipe;
     }
+
+    @Test
+    void retrouverEquipeParNom() {
+        Tournoi tournoi = creerTournoi();
+        Equipe equipe = creerEquipe("Les Lions", 1);
+        tournoi.inscrireEquipe(equipe);
+
+        assertSame(equipe, tournoi.trouverEquipeParNom("Les Lions"));
+        assertNull(tournoi.trouverEquipeParNom("Les Tigres"));
+    }
 }

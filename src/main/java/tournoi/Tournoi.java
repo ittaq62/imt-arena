@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.HashMap;
+import java.util.Map;
 
 import equipe.Equipe;
 import jeu.Jeu;
@@ -41,6 +43,7 @@ public class Tournoi {
     private volatile Etat etat;
     private volatile RapportTournoi rapport;
     private Future<?> futureSimulation;
+    private Map<String, Equipe> equipesParNom;
 
     // Constructeur
     public Tournoi(String nom, Jeu jeu, LocalDate date, double budget, int nombreArenes) {
@@ -66,6 +69,9 @@ public class Tournoi {
         this.arbitres = new ArrayList<>();
         this.matchs = new ArrayList<>();
         this.etat = Etat.PLANIFIE;
+        this.equipes = new ArrayList<>();
+        this.equipesParNom = new HashMap<>();
+        this.arbitres = new ArrayList<>();
     }
 
     // Getters
@@ -120,8 +126,12 @@ public class Tournoi {
         if (equipes.contains(equipe)) {
             throw new IllegalArgumentException("Cette équipe est déjà inscrite.");
         }
+        if (equipesParNom.containsKey(equipe.getNom())) {
+            throw new IllegalArgumentException("Une équipe porte déjà ce nom.");
+        }
 
         equipes.add(equipe);
+        equipesParNom.put(equipe.getNom(), equipe);
     }
 
     public void ajouterArbitre(Arbitre arbitre) {
@@ -210,6 +220,11 @@ public class Tournoi {
             throw new IllegalStateException("Le tournoi n'a pas encore été démarré.");
         }
         futureSimulation.get(delai, unite);
+    }
+
+    // Recherche d'une équipe par son nom
+    public Equipe trouverEquipeParNom(String nom) {
+        return equipesParNom.get(nom);
     }
 
     @Override
