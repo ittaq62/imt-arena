@@ -4,6 +4,7 @@ package tournoi;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,24 @@ import personne.Coach;
 import personne.Joueur;
 
 class GestionnaireTournoisTest {
+
+    private static Tournoi creerTournoiAvecArbitre(
+            String nom, LocalDate date, Jeu jeu, Arbitre arbitre, int idDepart) {
+        Tournoi tournoi = new Tournoi(nom, jeu, date, 1500.0, 1);
+
+        for (int i = 0; i < 4; i++) {
+            int id = idDepart + i;
+            Coach coach = new Coach(
+                    id, "Coach", "Prenom", "Coach" + id, "M", "0600000000");
+            Equipe equipe = new Equipe("Equipe" + id, coach);
+            equipe.ajouterJoueur(new Joueur(
+                    1000 + id, "Joueur", "Prenom", "Joueur" + id, "M", "0600000000"));
+            tournoi.inscrireEquipe(equipe);
+        }
+
+        tournoi.ajouterArbitre(arbitre);
+        return tournoi;
+    }
 
     // Vérifie l'ajout d'un tournoi planifié et le refus de null ou d'un doublon.
     @Test
@@ -34,7 +53,8 @@ class GestionnaireTournoisTest {
         }
     }
 
-    // Vérifie que le gestionnaire démarre le tournoi dont la date est la plus proche.
+    // Vérifie que le gestionnaire démarre le tournoi dont la date est la plus
+    // proche.
     @Test
     void demarrerProchainChoisitLeTournoiLePlusProche() {
         GestionnaireTournois gestionnaire = new GestionnaireTournois(0, 0, 42L);
@@ -70,6 +90,41 @@ class GestionnaireTournoisTest {
         arbitre.ajouterQualification(jeu);
         tournoi.ajouterArbitre(arbitre);
         return tournoi;
+    }
+
+    @Test
+    void arbitreOccupeNePeutPasEtreReutiliseEtRedevientDisponible() throws Exception {
+        GestionnaireTournois gestionnaire = new GestionnaireTournois(500, 0, 42L);
+
+        Jeu jeu = new JeuSolo("Street Fighter", 3);
+        Arbitre arbitre = new Arbitre(
+                50, "Durand", "Emma", "Emmy", "F", "0633333333");
+        arbitre.ajouterQualification(jeu);
+
+        Tournoi premier = creerTournoiAvecArbitre(
+                "Premier tournoi", LocalDate.of(2026, 11, 1), jeu, arbitre, 100);
+        Tournoi second = creerTournoiAvecArbitre(
+                "Deuxieme tournoi", LocalDate.of(2026, 11, 2), jeu, arbitre, 200);
+
+        try {
+            gestionnaire.planifier(premier);
+            gestionnaire.planifier(second);
+
+            assertSame(premier, gestionnaire.demarrerProchain());
+            assertTrue(gestionnaire.getArbitresOccupes().contains(arbitre));
+            assertFalse(gestionnaire.getArbitresDisponibles().contains(arbitre));
+
+            assertThrows(
+                    IllegalStateException.class,
+                    gestionnaire::demarrerProchain);
+
+            premier.attendreFin(10, TimeUnit.SECONDS);
+
+            assertFalse(gestionnaire.getArbitresOccupes().contains(arbitre));
+            assertTrue(gestionnaire.getArbitresDisponibles().contains(arbitre));
+        } finally {
+            gestionnaire.fermer();
+        }
     }
 
 }

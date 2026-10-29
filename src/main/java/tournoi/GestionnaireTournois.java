@@ -18,6 +18,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import personne.Arbitre;
 
 import equipe.Equipe;
 import personne.Joueur;
@@ -42,7 +45,8 @@ public class GestionnaireTournois {
         this(tempsParMatch, chanceIncident, graineAleatoire, new TirageEquitable(), new RapportRepository());
     }
 
-    public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire, ChoixVainqueur choixVainqueur, RapportRepository rapportRepository) {
+    public GestionnaireTournois(int tempsParMatch, int chanceIncident, long graineAleatoire,
+            ChoixVainqueur choixVainqueur, RapportRepository rapportRepository) {
         this.tempsParMatch = tempsParMatch;
         this.chanceIncident = chanceIncident;
         this.graineAleatoire = graineAleatoire;
@@ -99,6 +103,17 @@ public class GestionnaireTournois {
                         }
                     }
                 }
+            }
+        }
+
+        // Vérifie qu'aucun arbitre qualifié n'est déjà utilisé
+        Set<Arbitre> arbitresOccupes = new LinkedHashSet<>(getArbitresOccupes());
+
+        for (Arbitre arbitre : tournoi.getArbitres()) {
+            if (arbitre.estQualifiePour(tournoi.getJeu())
+                    && arbitresOccupes.contains(arbitre)) {
+                throw new IllegalStateException(
+                        "Un arbitre est déjà engagé dans un autre tournoi.");
             }
         }
 
@@ -204,11 +219,45 @@ public class GestionnaireTournois {
         return new ArrayList<>(tournoisEnCours);
     }
 
-
     public synchronized List<Tournoi> getTournoisTermines() {
         List<Tournoi> liste = new ArrayList<>(tournoisTermines);
         liste.sort(Comparator.comparingDouble(Tournoi::getBudget).reversed());
         return liste;
+    }
+
+    private List<Arbitre> getTousLesArbitresConnus() {
+        Set<Arbitre> arbitres = new LinkedHashSet<>();
+
+        for (Tournoi tournoi : tournoisPlanifies) {
+            arbitres.addAll(tournoi.getArbitres());
+        }
+        for (Tournoi tournoi : tournoisEnCours) {
+            arbitres.addAll(tournoi.getArbitres());
+        }
+        for (Tournoi tournoi : tournoisTermines) {
+            arbitres.addAll(tournoi.getArbitres());
+        }
+
+        return new ArrayList<>(arbitres);
+    }
+
+    public synchronized List<Arbitre> getArbitresOccupes() {
+        Set<Arbitre> occupes = new LinkedHashSet<>();
+
+        for (Tournoi tournoi : tournoisEnCours) {
+            for (Match match : tournoi.getMatchs()) {
+                occupes.add(match.getArbitre());
+            }
+        }
+
+        return new ArrayList<>(occupes);
+    }
+
+    public synchronized List<Arbitre> getArbitresDisponibles() {
+        Set<Arbitre> disponibles = new LinkedHashSet<>(getTousLesArbitresConnus());
+
+        disponibles.removeAll(getArbitresOccupes());
+        return new ArrayList<>(disponibles);
     }
 
     // Arrêt du pool de threads
