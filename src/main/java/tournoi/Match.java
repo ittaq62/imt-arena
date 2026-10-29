@@ -78,16 +78,6 @@ public class Match {
         this.etat = Etat.ANNULE;
     }
 
-    // Méthode toString
-    @Override
-    public String toString() {
-        String texte = equipe1.getNom() + " contre " + equipe2.getNom() + " (" + etat + ")";
-        if (vainqueur != null) {
-            texte = texte + ", vainqueur " + vainqueur.getNom();
-        }
-        return texte;
-    }
-
     public enum Etat {
         PREVU,
         JOUE,
