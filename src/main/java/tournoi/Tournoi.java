@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 import equipe.Equipe;
 import jeu.Jeu;
@@ -225,6 +226,11 @@ public class Tournoi {
     // Recherche d'une équipe par son nom
     public Equipe trouverEquipeParNom(String nom) {
         return equipesParNom.get(nom);
+    }
+
+    // Classement des équipes du tournoi, par points décroissants puis par nom
+    public TreeSet<Equipe> getClassement() {
+        return new TreeSet<>(equipes);
     }
 
     @Override

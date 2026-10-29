@@ -11,6 +11,7 @@ package tournoi;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -159,5 +160,20 @@ class TournoiTest {
 
         assertSame(equipe, tournoi.trouverEquipeParNom("Les Lions"));
         assertNull(tournoi.trouverEquipeParNom("Les Tigres"));
+    }
+
+    @Test
+    void classementTrieParPointsPuisParNom() {
+        Tournoi tournoi = creerTournoi();
+        Equipe lions = creerEquipe("Les Lions", 1);
+        Equipe tigres = creerEquipe("Les Tigres", 2);
+        Equipe aigles = creerEquipe("Les Aigles", 3);
+        tournoi.inscrireEquipe(lions);
+        tournoi.inscrireEquipe(tigres);
+        tournoi.inscrireEquipe(aigles);
+
+        tigres.enregistrerVictoire();
+
+        assertIterableEquals(List.of(tigres, aigles, lions), tournoi.getClassement());
     }
 }
